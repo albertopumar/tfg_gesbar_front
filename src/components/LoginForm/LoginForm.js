@@ -1,5 +1,6 @@
 import React from "react";
 import {Redirect} from 'react-router-dom'
+import "./LoginForm.scss"
 
 class LoginForm extends React.Component {
 
@@ -63,7 +64,7 @@ class LoginForm extends React.Component {
                         <input type="text" placeholder="Usuario" ref={this.userInput}/>
                         <input type="password" placeholder="Contraseña" ref={this.passwordInput}/>
 
-                        <button type="submit">Click</button>
+                        <button type="submit" className="btn btn-primary btn-block btn-large">Enviar</button>
 
                     </form>
                 </div>

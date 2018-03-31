@@ -1,6 +1,6 @@
 const base_url = 'http://localhost:7777/api/V1/';
 
-export function apiGet(uri) {
+function get(uri) {
 
     return getToken().then(res => {
         return fetch(base_url + uri, {
@@ -17,7 +17,7 @@ export function apiGet(uri) {
     });
 }
 
-export function apiDelete(uri) {
+function remove(uri) {
 
     return getToken().then(res => {
         return fetch(base_url + uri, {
@@ -34,7 +34,7 @@ export function apiDelete(uri) {
     });
 }
 
-export function apiPost(uri, data) {
+function post(uri, data) {
     return getToken().then(res => {
         return fetch(base_url + uri, {
             body: JSON.stringify(data),
@@ -51,7 +51,24 @@ export function apiPost(uri, data) {
     });
 }
 
-export function getToken() {
+function put(uri, data) {
+    return getToken().then(res => {
+        return fetch(base_url + uri, {
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${res}`
+            },
+            method: 'PUT',
+            cache: "no-cache"
+        })
+            .then(response => {
+                return response.json()
+            });
+    });
+}
+
+function getToken() {
 
     const dateTime = Date.now();
     const timestamp = Math.floor(dateTime / 1000);
@@ -62,11 +79,13 @@ export function getToken() {
             resolve(credentials.data.access_token);
         });
     } else {
-        return renewToken().then(res => {return res});
+        return renewToken().then(res => {
+            return res
+        });
     }
 }
 
-export function renewToken() {
+function renewToken() {
 
     const credentials = JSON.parse(sessionStorage.getItem('credentials'));
     const data = {
@@ -91,3 +110,9 @@ export function renewToken() {
             return credentials.data.access_token;
         });
 }
+
+const ApiProvider = {
+    get, post, remove, put
+};
+
+export default ApiProvider;

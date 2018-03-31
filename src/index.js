@@ -4,6 +4,7 @@ import AddMenuItem from './components/AddMenuItem/AddMenuItem'
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
 import LoginForm from "./components/LoginForm/LoginForm";
 import EstablishmentList from "./components/EstablishmentList/EstablishmentList";
+import MenuList from "./components/MenuList/MenuList";
 
 const isAuth = () => {
     if(sessionStorage.getItem('credentials')) {
@@ -32,6 +33,7 @@ render(
             { /* Only Owner can access those Routes */ }
             <OwnerRoute path="/menu" component={AddMenuItem} />
             <OwnerRoute path="/establishments" component={EstablishmentList} />
+            <OwnerRoute path="/establishment/:establishmentId/menus" component={MenuList} />
         </Switch>
     </Router>
     , document.querySelector('#main'));

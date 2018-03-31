@@ -1,4 +1,6 @@
 import React from "react";
+import ApiProvider from "../../providers/ApiProvider"
+import "./Establishment.scss"
 
 class Establishment extends React.Component {
 
@@ -8,65 +10,59 @@ class Establishment extends React.Component {
     processForm = (event) => {
         event.preventDefault();
 
-        // TODO: create helper
-        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
-        const token = credentials.data.access_token;
-
         const data = {
             name: this.nameRef.value.value,
             description: this.descriptionRef.value.value
         };
 
-        //TODO: handle error
-        fetch(`http://localhost:7777/api/V1/owner/establishment/${this.props.id ? this.props.id : ''}`, {
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            method: this.props.id ? 'PUT' : 'POST',
-        })
-            .then(response => response.json())
-            .then(res => console.log(res));
+        if (this.props.establishment._id) {
+            ApiProvider.put(`owner/establishment/${this.props.establishment._id}`, data).then(res => {
+                // TODO: Handle error and success
+                console.log(res);
+            });
+        } else {
+            ApiProvider.post('owner/establishment', data).then(res => {
+                // TODO: Handle error and success and update state
+                console.log(res);
+            });
+        }
     };
 
     //TODO: Delete from state
     deleteEstablishment = (event) => {
         event.preventDefault();
 
-        // TODO: create helper
-        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
-        const token = credentials.data.access_token;
-
-        fetch(`http://localhost:7777/api/V1/owner/establishment/${this.props.id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            method: 'DELETE',
-        })
-            .then(response => response.json())
-            .then(res => console.log(res));
+        ApiProvider.remove(`owner/establishment/${this.props.establishment._id}`).then(res => {
+            // TODO: Handle error and success
+            this.props.removeFromState(this.props.establishment);
+        });
     };
 
     viewMenu = (event) => {
         event.preventDefault();
+
+        this.props.history.push(`/establishment/${this.props.establishment._id}/menus`);
     };
 
     render() {
         return (
-            <form className="establishment" onSubmit={this.processForm}>
-                <input type="text" placeholder="Nombre" ref={this.nameRef} defaultValue={this.props.name}/>
-                <input type="text" placeholder="Descripción" ref={this.descriptionRef} defaultValue={this.props.description} />
+            <div className="col-md-4">
+                <form className="establishment" onSubmit={this.processForm}>
+                    <input type="text" placeholder="Nombre" ref={this.nameRef} defaultValue={this.props.establishment.name}/>
+                    <textarea placeholder="Descripción" ref={this.descriptionRef}
+                              defaultValue={this.props.establishment.description}></textarea>
 
-                <button type="submit">Guardar</button>
+                    <button className="btn btn-primary btn-block btn-large" type="submit">Guardar</button>
 
-                {
-                    // TODO: Eliminar y ver menú
-                }
-                <button onClick={this.deleteEstablishment}>Eliminar</button>
-                <button onClick={this.viewMenu}>Ver menú</button>
-            </form>
+                    {
+                        // TODO: Ver menú
+                    }
+                    <button className="btn btn-primary btn-block btn-large"
+                            onClick={this.deleteEstablishment}>Eliminar
+                    </button>
+                    <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
+                </form>
+            </div>
         )
     }
 }

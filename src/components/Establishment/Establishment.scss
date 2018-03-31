@@ -1,4 +1,26 @@
-.test {
-  background: red;
-  color: red;
+.establishment {
+  min-height: 300px;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+  -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+  padding: 30px;
+
+  textarea,
+  input {
+    background: transparent;
+    border: none;
+    font-family: 'Open Sans', sans-serif;
+    color: #ffffff;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  input {
+    border-bottom: 1px solid #888888;
+  }
+
+  textarea {
+    resize: none;
+    min-height: 100px;
+  }
 }
