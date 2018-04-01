@@ -29,7 +29,7 @@ class MenuList extends React.Component {
                                 <div className="col-md-6">
                                     <div className="menu-container">
                                         <h2>{menu.name}</h2>
-                                        <button className="btn btn-primary">Borrar</button>
+                                        <button className="btn btn-danger">Borrar</button>
                                         <button className="btn btn-primary">Editar</button>
                                     </div>
                                 </div>

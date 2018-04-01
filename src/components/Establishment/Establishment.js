@@ -57,11 +57,12 @@ class Establishment extends React.Component {
                     <textarea placeholder="Descripción" ref={this.descriptionRef}
                               defaultValue={this.props.establishment.description}></textarea>
 
-                    <button className="btn btn-primary btn-block btn-large" type="submit">Guardar</button>
-                    <button className="btn btn-primary btn-block btn-large"
+                    <button className="btn btn-success btn-block btn-large" type="submit">Guardar</button>
+                    <button className="btn btn-danger btn-block btn-large"
                             onClick={this.deleteEstablishment}>Eliminar
                     </button>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
+                    <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver Pedidos</button>
                 </form>
             </div>
         )
