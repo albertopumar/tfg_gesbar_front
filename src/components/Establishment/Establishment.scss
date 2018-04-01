@@ -1,4 +1,5 @@
 .establishment {
+  position: relative;
   min-height: 350px;
   -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
   -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
@@ -23,5 +24,18 @@
   textarea {
     resize: none;
     min-height: 100px;
+  }
+  .order-count {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: red;
+    border-radius: 50%;
+    font-family: 'Open Sans', sans-serif;
+    color: #ffffff;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
   }
 }

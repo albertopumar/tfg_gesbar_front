@@ -2,6 +2,7 @@ import React from "react";
 import {CSSTransition} from "react-transition-group"
 import Establishment from "../Establishment/Establishment";
 import ApiProvider from "../../providers/ApiProvider";
+import RNEventSource from "react-native-event-source";
 import "./EstablishmentList.scss"
 
 class EstablishmentList extends React.Component {
@@ -17,6 +18,44 @@ class EstablishmentList extends React.Component {
             this.setState({establishments: res})
         });
 
+    }
+
+    componentDidMount() {
+
+        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        this.eventSource = new RNEventSource('http://localhost:7777/api/V1/events/establishment', {
+            headers: {
+                'Authorization': `Bearer ${credentials.data.access_token}`
+            }
+        });
+
+        this.eventSource.addEventListener('message', (data) => {
+            const object = JSON.parse(data.data);
+            Object.keys(object).map((key) => {
+                if (object[key].orders) {
+                    let establishments = [...this.state.establishments];
+
+                    let found = establishments.find(function(element) {
+                        return element['_id'] === object[key]._id;
+                    });
+                    const index = establishments.indexOf(found);
+
+                    establishments[index].orders = object[key].orders;
+
+                    this.setState({
+                        establishments: establishments
+                    });
+
+                    return true;
+                }
+                return false;
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        this.eventSource.removeAllListeners();
+        this.eventSource.close();
     }
 
     removeFromState = (establishment) => {

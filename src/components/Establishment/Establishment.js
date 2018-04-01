@@ -50,6 +50,12 @@ class Establishment extends React.Component {
     };
 
     render() {
+
+        let orders = '';
+        if (this.props.establishment.orders) {
+            orders = (<div className="order-count">{this.props.establishment.orders.length}</div>);
+        }
+
         return (
             <div className="col-md-4">
                 <form className="establishment" onSubmit={this.processForm}>
@@ -63,6 +69,8 @@ class Establishment extends React.Component {
                     </button>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver Pedidos</button>
+
+                    {orders}
                 </form>
             </div>
         )
