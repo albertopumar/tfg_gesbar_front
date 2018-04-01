@@ -18,17 +18,22 @@ class Establishment extends React.Component {
         if (this.props.establishment._id) {
             ApiProvider.put(`owner/establishment/${this.props.establishment._id}`, data).then(res => {
                 // TODO: Handle error and success
+                if(!res.message) {
+                    this.props.showSuccess();
+                }
                 console.log(res);
             });
         } else {
             ApiProvider.post('owner/establishment', data).then(res => {
                 // TODO: Handle error and success and update state
                 console.log(res);
+                if(!res.message) {
+                    this.props.showSuccess();
+                }
             });
         }
     };
 
-    //TODO: Delete from state
     deleteEstablishment = (event) => {
         event.preventDefault();
 
@@ -53,10 +58,6 @@ class Establishment extends React.Component {
                               defaultValue={this.props.establishment.description}></textarea>
 
                     <button className="btn btn-primary btn-block btn-large" type="submit">Guardar</button>
-
-                    {
-                        // TODO: Ver menú
-                    }
                     <button className="btn btn-primary btn-block btn-large"
                             onClick={this.deleteEstablishment}>Eliminar
                     </button>

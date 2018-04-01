@@ -1,4 +1,5 @@
 import React from "react";
+import {CSSTransition} from "react-transition-group"
 import Establishment from "../Establishment/Establishment";
 import ApiProvider from "../../providers/ApiProvider";
 import "./EstablishmentList.scss"
@@ -6,7 +7,8 @@ import "./EstablishmentList.scss"
 class EstablishmentList extends React.Component {
 
     state = {
-        establishments: []
+        establishments: [],
+        showSuccess: false,
     };
 
     componentWillMount() {
@@ -32,7 +34,6 @@ class EstablishmentList extends React.Component {
         const establishments = [...this.state.establishments];
         establishments.push(
             {
-                _id: Math.random(),
                 description: '',
                 name: '',
             }
@@ -42,6 +43,11 @@ class EstablishmentList extends React.Component {
         });
     };
 
+    showSuccess = () => {
+        this.setState({
+            showSuccess: true
+        });
+    };
 
     render() {
         return (
@@ -49,13 +55,36 @@ class EstablishmentList extends React.Component {
                 <div className="container">
                     <div className="row">
                         {this.state.establishments.map((establishment) => {
-                            return <Establishment key={establishment._id} history={this.props.history} establishment={establishment} removeFromState={this.removeFromState}/>
+                            return <Establishment
+                                key={
+                                    establishment._id ?
+                                        establishment._id
+                                        : (Math.random() + 1).toString(36).substring(24)
+                                }
+                                history={this.props.history}
+                                establishment={establishment}
+                                removeFromState={this.removeFromState}
+                                showSuccess={this.showSuccess} />
                         })}
                         <div className="col-md-4">
-                            <button className="create-establishment-button" onClick={this.createEstablishment}>Crear Establecimiento</button>
+                            <button className="create-establishment-button" onClick={this.createEstablishment}>
+                                Crear Establecimiento
+                            </button>
                         </div>
                     </div>
                 </div>
+                <CSSTransition
+                    in={this.state.showSuccess}
+                    timeout={{enter: 1500, exit: 500}}
+                    classNames="success-popup"
+                    unmountOnExit
+                    onEntered={() => {
+                        this.setState({
+                            showSuccess: false
+                        })
+                    }}>
+                    <div className="success-popup">Success</div>
+                </CSSTransition>
             </div>
         )
     }
