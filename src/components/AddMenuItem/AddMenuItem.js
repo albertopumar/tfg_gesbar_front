@@ -1,6 +1,6 @@
 import React from "react";
 import ItemOptions from "../ItemOptions/ItemOptions";
-import classnames from "classnames";
+import ApiProvider from "../../providers/ApiProvider";
 
 class AddMenuItem extends React.Component {
 
@@ -94,38 +94,42 @@ class AddMenuItem extends React.Component {
             });
         });
 
-        console.log(JSON.stringify(data));
 
+        let menu = {};
+        menu['name'] = this.nameInput.value.value;
 
-        fetch('http://localhost:7777/api/V1/establishment/1/menu/', {
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-        })
-            .then(response => response.json())
-            .then(res => console.log(res));
+        let menuItems = {};
+        menuItems[this.nameInput.value.value] = data;
+        menu['items'] = menuItems;
+
+        //TODO: Set stablishment
+        ApiProvider.post(`owner/establishment/${this.props.menu.establishment}/menu/${this.props.menu._id}/items`, menu).then(res => {
+            // TODO: Handle error and success
+            console.log(res);
+        });
 
     };
 
     render() {
         return (
-            <form className={classnames('test')} onSubmit={this.processForm}>
-                <input type="text" placeholder="Nombre del producto" ref={this.nameInput}/>
+            <form className="add-item-menu" onSubmit={this.processForm}>
+                <div className="row justify-content-md-center">
+                    <div className="col-md-4">
+                        <input type="text" placeholder="Nombre del producto" ref={this.nameInput}/>
 
-                {Object.keys(this.state.attributes).map(key =>
-                    <div key={key}>
-                        <ItemOptions addOption={this.addOption} removeOption={this.removeOption}
-                             options={this.state.attributes[key].options} attribute={key} nameRef={this.state.attributes[key].ref}/>
+                        {Object.keys(this.state.attributes).map(key =>
+                            <div key={key}>
+                                <ItemOptions addOption={this.addOption} removeOption={this.removeOption}
+                                             options={this.state.attributes[key].options} attribute={key} nameRef={this.state.attributes[key].ref}/>
 
-                        <button onClick={(event) => this.removeAttribute(key, event)}>Remove Attribute</button>
+                                <button onClick={(event) => this.removeAttribute(key, event)}>Remove Attribute</button>
+                            </div>
+                        )}
+
+                        <button className="btn btn-primary" type="submit">Click</button>
+                        <button className="btn btn-primary" onClick={this.addAttribute}>Add Attribute</button>
                     </div>
-                )}
-
-                <button type="submit">Click</button>
-
-                <button onClick={this.addAttribute}>Add Attribute</button>
+                </div>
             </form>
         )
     }

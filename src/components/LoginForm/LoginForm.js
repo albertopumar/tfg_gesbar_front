@@ -42,13 +42,13 @@ class LoginForm extends React.Component {
                     const timestamp = Math.floor(dateTime / 1000);
 
                     const object = {
-                        type: 'owner',
+                        type: res.type,
                         data: res,
                         timestamp: timestamp,
                     };
                     sessionStorage.setItem('credentials', JSON.stringify(object));
 
-                    this.setState({loggedIn: true});
+                    this.setState({loggedIn: res.type});
                 }
             });
     };
@@ -59,7 +59,8 @@ class LoginForm extends React.Component {
                 <div className="login">
                     <h1>Login</h1>
                     <form onSubmit={this.processForm}>
-                        {this.state.loggedIn ? <Redirect to="/establishments"/> : ''}
+                        {this.state.loggedIn === 'owner' ? <Redirect to="/establishments"/> : ''}
+                        {this.state.loggedIn === 'client' ? <Redirect to="/orders"/> : ''}
 
                         <input type="text" placeholder="Usuario" ref={this.userInput}/>
                         <input type="password" placeholder="Contraseña" ref={this.passwordInput}/>

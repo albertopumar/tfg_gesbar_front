@@ -1,6 +1,7 @@
 import React from "react";
 import ApiProvider from "../../providers/ApiProvider"
 import "./Establishment.scss"
+import SweetAlert from "../SweetAlert/SweetAlert";
 
 class Establishment extends React.Component {
 
@@ -34,12 +35,12 @@ class Establishment extends React.Component {
         }
     };
 
-    deleteEstablishment = (event) => {
-        event.preventDefault();
+    deleteEstablishment = (establishment) => {
+        console.log(establishment);
 
-        ApiProvider.remove(`owner/establishment/${this.props.establishment._id}`).then(res => {
+        ApiProvider.remove(`owner/establishment/${establishment._id}`).then(res => {
             // TODO: Handle error and success
-            this.props.removeFromState(this.props.establishment);
+            this.props.removeFromState(establishment);
         });
     };
 
@@ -64,9 +65,7 @@ class Establishment extends React.Component {
                               defaultValue={this.props.establishment.description}></textarea>
 
                     <button className="btn btn-success btn-block btn-large" type="submit">Guardar</button>
-                    <button className="btn btn-danger btn-block btn-large"
-                            onClick={this.deleteEstablishment}>Eliminar
-                    </button>
+                    <SweetAlert buttonName="Test Delete" action={this.deleteEstablishment} delete={this.props.establishment}/>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver Pedidos</button>
 
