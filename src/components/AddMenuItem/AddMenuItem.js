@@ -7,10 +7,7 @@ class AddMenuItem extends React.Component {
     nameInput = React.createRef();
     state = {
         attributes: {
-            attribute: {
-                ref: React.createRef(),
-                options: {}
-            }
+
         },
     };
 
@@ -114,20 +111,26 @@ class AddMenuItem extends React.Component {
         return (
             <form className="add-item-menu" onSubmit={this.processForm}>
                 <div className="row justify-content-md-center">
+                    <div className="col-md-6">
+                        <input type="text" className="product-name" placeholder="Nombre del producto" ref={this.nameInput}/>
+                        <input type="text" placeholder="Precio del producto"/>
+                        <textarea placeholder="Descripción del producto"></textarea>
+                    </div>
+                </div>
+                <div className="row justify-content-md-center">
                     <div className="col-md-4">
-                        <input type="text" placeholder="Nombre del producto" ref={this.nameInput}/>
-
                         {Object.keys(this.state.attributes).map(key =>
-                            <div key={key}>
-                                <ItemOptions addOption={this.addOption} removeOption={this.removeOption}
-                                             options={this.state.attributes[key].options} attribute={key} nameRef={this.state.attributes[key].ref}/>
-
-                                <button onClick={(event) => this.removeAttribute(key, event)}>Remove Attribute</button>
-                            </div>
+                            <ItemOptions key={key}
+                                         options={this.state.attributes[key].options}
+                                         attribute={key}
+                                         nameRef={this.state.attributes[key].ref}
+                                         removeAttribute={this.removeAttribute}
+                                         addOption={this.addOption}
+                                         removeOption={this.removeOption}/>
                         )}
+                        <button className="btn btn-primary btn-block add-product-attribute" onClick={this.addAttribute}>Añadir Atributo</button>
 
-                        <button className="btn btn-primary" type="submit">Click</button>
-                        <button className="btn btn-primary" onClick={this.addAttribute}>Add Attribute</button>
+                        <button className="btn btn-success btn-block " type="submit">Guardar</button>
                     </div>
                 </div>
             </form>

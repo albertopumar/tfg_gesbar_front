@@ -23,6 +23,8 @@ class EstablishmentList extends React.Component {
     componentDidMount() {
 
         const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        console.log(credentials);
+
         this.eventSource = new RNEventSource('http://localhost:7777/api/V1/events/establishment', {
             headers: {
                 'Authorization': `Bearer ${credentials.data.access_token}`
@@ -31,24 +33,15 @@ class EstablishmentList extends React.Component {
 
         this.eventSource.addEventListener('message', (data) => {
             const object = JSON.parse(data.data);
-            Object.keys(object).map((key) => {
-                if (object[key].orders) {
-                    let establishments = [...this.state.establishments];
 
-                    let found = establishments.find(function(element) {
-                        return element['_id'] === object[key]._id;
-                    });
-                    const index = establishments.indexOf(found);
+            let establishments = [...this.state.establishments];
+            establishments = establishments.map((establishment) => {
+                establishment.orders = object[establishment._id];
+                return establishment;
+            });
 
-                    establishments[index].orders = object[key].orders;
-
-                    this.setState({
-                        establishments: establishments
-                    });
-
-                    return true;
-                }
-                return false;
+            this.setState({
+                establishments: establishments
             });
         });
     }

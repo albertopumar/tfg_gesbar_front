@@ -9,6 +9,8 @@ import MenuItemList from "../MenuItemList/MenuItemList";
 
 import AddMenuItem from '../AddMenuItem/AddMenuItem'
 import OrderList from "../OrderList/OrderList";
+import AllEstablishment from "../AllEstablishment/AllEstablishment";
+import SubmitOrder from "../SubmitOrder/SubmitOrder";
 
 const isAuth = () => {
     if (sessionStorage.getItem('credentials')) {
@@ -54,6 +56,8 @@ class App extends React.Component{
 
                             {/* Only Client can access those Routes */}
                             <ClientRoute path="/orders" component={OrderList}/>
+                            <ClientRoute path="/establishment/list" component={AllEstablishment}/>
+                            <ClientRoute path="/submitOrder/:establishmentId" component={SubmitOrder}/>
                         </Switch>
                     </div>
                 </Router>

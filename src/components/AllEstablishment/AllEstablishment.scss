@@ -1,0 +1,17 @@
+.establishment-list{
+  .search-establishment {
+    padding: 30px 0;
+    input {
+      width: 100%;
+    }
+  }
+  .establishment-name {
+    margin-bottom: 35px;
+  }
+  .show-menu-button {
+    height: 40px;
+  }
+  .next-button, .prev-button {
+    margin: 0 10px;
+  }
+}

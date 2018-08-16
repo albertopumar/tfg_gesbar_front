@@ -44,36 +44,23 @@ class MenuList extends React.Component {
         });
     };
 
-    /*
-        render() {
-            return (
-                <div className="menu-list">
-                    <div className="container">
-                        {this.state.menus.map((menu) => {
-                            return (
-                                <div className="row justify-content-md-center" key={menu._id}>
-                                    <div className="col-md-6">
-                                        <div className="menu-container">
-                                            <h2>{menu.name}</h2>
-                                            <button className="btn btn-danger">Borrar</button>
-                                            <button className="btn btn-primary">Editar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })}
+    updateActiveMenu = (menu_id) => {
+        const {match: {params}} = this.props;
 
-                        <div className="row justify-content-center">
-                            <div className="col-md-4">
-                                <button className="btn btn-primary btn-block" onClick={this.createMenu}>Add menu</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-    }
-    */
+        ApiProvider.get(`owner/establishment/${params.establishmentId}/activeMenu/${menu_id}`).then(res => {
+            let menus = [...this.state.menus];
+
+            menus.forEach((menu) => {
+                if (menu._id === res._id) {
+                    menu.availability = true;
+                } else {
+                    menu.availability = false;
+                }
+            });
+
+            this.setState({menus: menus});
+        });
+    };
 
     render() {
         return (
@@ -85,6 +72,7 @@ class MenuList extends React.Component {
                             history={this.props.history}
                             menu={menu}
                             removeFromState={this.removeFromState}
+                            updateActiveMenu={this.updateActiveMenu}
                         />
                     })}
 

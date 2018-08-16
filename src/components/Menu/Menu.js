@@ -62,6 +62,10 @@ class Menu extends React.Component {
         event.preventDefault();
         this.props.history.push(`/establishment/${this.props.menu.establishment}/menu/${this.props.menu._id}/products`);
     };
+    updateActiveMenu = (event) => {
+        event.preventDefault();
+        this.props.updateActiveMenu(this.props.menu._id);
+    };
 
     render() {
         let editMenu = '';
@@ -82,7 +86,10 @@ class Menu extends React.Component {
                     <div className="col-md-6">
                         <form onSubmit={this.processForm} className="menu-container">
                             <div className="row">
-                                <div className="col-md-12">
+                                <div className="col-md-1">
+                                    <input type="checkbox" checked={this.props.menu.availability} onChange={this.updateActiveMenu}/>
+                                </div>
+                                <div className="col-md-11">
                                     <input type="text" placeholder="Nombre" ref={this.nameRef} defaultValue={this.props.menu.name}/>
                                 </div>
                             </div>

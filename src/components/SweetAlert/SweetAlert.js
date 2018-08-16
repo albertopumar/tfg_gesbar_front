@@ -26,7 +26,7 @@ class SweetAlert extends React.Component {
 
     render() {
         return (
-            <div className="btn btn-danger sweet-alert" onClick={this.delete}><span
+            <div className={`btn btn-danger sweet-alert ${this.props.classes}`} onClick={this.delete}><span
                 className='s'>{this.props.buttonName}</span></div>
         )
     }

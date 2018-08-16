@@ -22,12 +22,10 @@ class Establishment extends React.Component {
                 if(!res.message) {
                     this.props.showSuccess();
                 }
-                console.log(res);
             });
         } else {
             ApiProvider.post('owner/establishment', data).then(res => {
                 // TODO: Handle error and success and update state
-                console.log(res);
                 if(!res.message) {
                     this.props.showSuccess();
                 }
@@ -54,7 +52,7 @@ class Establishment extends React.Component {
 
         let orders = '';
         if (this.props.establishment.orders) {
-            orders = (<div className="order-count">{this.props.establishment.orders.length}</div>);
+            orders = (<div className="order-count">{this.props.establishment.orders}</div>);
         }
 
         return (
@@ -65,7 +63,7 @@ class Establishment extends React.Component {
                               defaultValue={this.props.establishment.description}></textarea>
 
                     <button className="btn btn-success btn-block btn-large" type="submit">Guardar</button>
-                    <SweetAlert buttonName="Test Delete" action={this.deleteEstablishment} delete={this.props.establishment}/>
+                    <SweetAlert buttonName="Delete" classes="btn-block btn-large" action={this.deleteEstablishment} delete={this.props.establishment}/>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver Pedidos</button>
 
