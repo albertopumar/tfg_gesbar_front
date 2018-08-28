@@ -1,20 +1,34 @@
 import React from "react";
 import "./OrderList.scss"
 import ApiProvider from "../../providers/ApiProvider";
+import OrderItem from "../OrderItem/OrderItem";
 
 class OrderList extends React.Component {
 
     state = {
+        isOwner: false,
         pending: [],
         history: []
     };
 
     componentWillMount() {
-        ApiProvider.get('orders').then((res) => {
+        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        const isOwner = credentials.type === 'owner';
+        this.setState({isOwner: isOwner});
+
+        ApiProvider.get('orders?status=pending').then((res) => {
             this.setState({
                 pending: res
             });
-        })
+        });
+
+        if (!isOwner) {
+            ApiProvider.get('orders').then((res) => {
+                this.setState({
+                    history: res
+                });
+            });
+        }
     }
 
     searchEstablishment = (event) => {
@@ -22,35 +36,33 @@ class OrderList extends React.Component {
         this.props.history.push(`/establishment/list`);
     };
 
-    formatOrder = (products) => {
-        const result = products.map((product) => {
-            return product.name + ': ' + Object.keys(product.options).map((option_key) => {
-                return product.options[option_key];
-            });
-        });
-        return result[0];
-    };
-
     render() {
         return (
             <div className="order-list">
+                <h2>Pedidos en proceso</h2>
                 <div className="container">
                     {this.state.pending.map((order) => {
-                        return (
-                            <div key={order._id} className="row align-items-center">
-                                <div className="col-md-6">
-                                    <h2>{new Date(order.date).toLocaleDateString('es-ES')}</h2>
-                                    <p>{this.formatOrder(order.products)}</p>
-                                </div>
-                                <div className="col-md-4 offset-md-2">
-                                    <button className="btn btn-primary btn-large">Ver pedido</button>
-                                </div>
-                            </div>
-                        );
+                        return <OrderItem key={order._id} order={order} isOwner={this.state.isOwner}/>
                     })}
                 </div>
-                <button className="btn btn-primary btn-large" onClick={this.searchEstablishment}>Realizar pedido
-                </button>
+
+                {
+                    this.state.isOwner ?
+                        '' :
+
+                        <React.Fragment>
+                            <h2>Pedidos terminados</h2>
+                            <div className="container">
+                                {this.state.history.map((order) => {
+                                    return <OrderItem key={order._id} order={order}/>
+                                })}
+                            </div>
+
+                            <button className="btn btn-primary btn-large" onClick={this.searchEstablishment}>Realizar
+                                pedido
+                            </button>
+                        </React.Fragment>
+                }
             </div>
         )
     }

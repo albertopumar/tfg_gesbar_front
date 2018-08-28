@@ -2,6 +2,7 @@ import React from "react";
 import ApiProvider from "../../providers/ApiProvider";
 import SweetAlert from "../SweetAlert/SweetAlert";
 import AddMenuItem from "../AddMenuItem/AddMenuItem";
+import {CSSTransition} from "react-transition-group"
 
 import "./Menu.scss"
 
@@ -11,7 +12,8 @@ class Menu extends React.Component {
     descriptionRef = React.createRef();
 
     state = {
-        editMenu: false
+        editMenu: false,
+        showSuccess: false
     };
 
     processForm = (event) => {
@@ -24,18 +26,16 @@ class Menu extends React.Component {
 
         if (this.props.menu._id) {
             ApiProvider.put(`owner/establishment/${this.props.menu.establishment}/menu/${this.props.menu._id}`, data).then(res => {
-                // TODO: Handle error and success
-                if(!res.message) {
-
-                }
                 console.log(res);
+                if(!res.message) {
+                    this.setState({showSuccess: true});
+                }
             });
         } else {
             ApiProvider.post(`owner/establishment/${this.props.menu.establishment}/menu`, data).then(res => {
-                // TODO: Handle error and success and update state
                 console.log(res);
                 if(!res.message) {
-
+                    this.setState({showSuccess: true});
                 }
             });
         }
@@ -73,7 +73,7 @@ class Menu extends React.Component {
             editMenu = (
                 <div className="add-item-popup">
                     <span className="close-add-item" onClick={this.closeAddItem}>x</span>
-                    <AddMenuItem menu={this.props.menu} />
+                    <AddMenuItem menu={this.props.menu} success={this.closeAddItem}/>
                 </div>
             );
         } else {
@@ -116,7 +116,21 @@ class Menu extends React.Component {
                         </form>
                     </div>
                 </div>
+
                 {editMenu}
+
+                <CSSTransition
+                    in={this.state.showSuccess}
+                    timeout={{enter: 1500, exit: 500}}
+                    classNames="success-popup"
+                    unmountOnExit
+                    onEntered={() => {
+                        this.setState({
+                            showSuccess: false
+                        })
+                    }}>
+                    <div className="success-popup">Menú Guardado</div>
+                </CSSTransition>
             </React.Fragment>
         )
     }

@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom
 import Navigation from "../Navigation/Navigation";
 
 import LoginForm from "../LoginForm/LoginForm";
+import RegisterForm from "../RegisterForm/RegisterForm";
 import EstablishmentList from "../EstablishmentList/EstablishmentList";
 import MenuList from "../MenuList/MenuList";
 import MenuItemList from "../MenuItemList/MenuItemList";
@@ -46,13 +47,14 @@ class App extends React.Component{
                         <Navigation history={this.props.history}/>
                         <Switch>
                             <Route path="/login" component={LoginForm}/>
+                            <Route path="/register" component={RegisterForm}/>
 
                             {/* Only Owner can access those Routes */}
-                            <OwnerRoute path="/menu" component={AddMenuItem}/>
                             <OwnerRoute path="/establishments" component={EstablishmentList}/>
                             <OwnerRoute path="/establishment/:establishmentId/menus" component={MenuList}/>
+                            <OwnerRoute path="/establishment/:establishmentId/orders" component={OrderList}/>
                             <OwnerRoute path="/establishment/:establishmentId/menu/:menuId/products" component={MenuItemList}/>
-
+                            <OwnerRoute path="/establishment/:establishmentId/menu/:menuId/updateProducts" component={AddMenuItem}/>
 
                             {/* Only Client can access those Routes */}
                             <ClientRoute path="/orders" component={OrderList}/>

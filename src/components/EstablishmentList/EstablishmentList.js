@@ -115,7 +115,7 @@ class EstablishmentList extends React.Component {
                             showSuccess: false
                         })
                     }}>
-                    <div className="success-popup">Success</div>
+                    <div className="success-popup">Establecimiento Guardado</div>
                 </CSSTransition>
             </div>
         )

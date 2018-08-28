@@ -5,11 +5,49 @@ import ApiProvider from "../../providers/ApiProvider";
 class AddMenuItem extends React.Component {
 
     nameInput = React.createRef();
-    state = {
-        attributes: {
+    priceInput = React.createRef();
+    descriptionInput = React.createRef();
 
-        },
+    state = {
+        attributes: {},
     };
+
+    componentWillMount() {
+        if (this.props.edit) {
+
+            if (this.props.edit.options) {
+                let attributes = {...this.state.attributes};
+                let attributeIndex = 0;
+                Object.keys(this.props.edit.options).forEach((value) => {
+                    attributeIndex++;
+
+                    let options = {};
+                    let optionIndex = 0;
+                    if (this.props.edit.options) {
+
+                        this.props.edit.options[value].forEach(
+                            (option) => {
+                            optionIndex++;
+
+                            options[`options_${optionIndex}`] = {
+                                ref: React.createRef(),
+                                devaultOption: option,
+                                placeholder: 'Añade una opción',
+                            };
+                        });
+                    }
+                    attributes[`attribute_${attributeIndex}`] = {
+                        ref: React.createRef(),
+                        defaultName: value,
+                        options
+                    };
+                });
+                this.setState({
+                    attributes: attributes
+                });
+            }
+        }
+    }
 
     addOption = (attribute, event) => {
         if (event) event.preventDefault();
@@ -94,16 +132,24 @@ class AddMenuItem extends React.Component {
 
         let menu = {};
         menu['name'] = this.nameInput.value.value;
+        menu['price'] = this.priceInput.value.value;
+        menu['description'] = this.descriptionInput.value.value;
+        menu['options'] = data;
 
-        let menuItems = {};
-        menuItems[this.nameInput.value.value] = data;
-        menu['items'] = menuItems;
 
-        //TODO: Set stablishment
-        ApiProvider.post(`owner/establishment/${this.props.menu.establishment}/menu/${this.props.menu._id}/items`, menu).then(res => {
-            // TODO: Handle error and success
-            console.log(res);
-        });
+        if (this.props.edit) {
+            ApiProvider.put(`owner/establishment/${this.props.establishmentId}/menu/${this.props.edit.menu}/items/${this.props.edit._id}`, menu).then(res => {
+                if (res._id) {
+                    this.props.success();
+                }
+            });
+        } else {
+            ApiProvider.post(`owner/establishment/${this.props.menu.establishment}/menu/${this.props.menu._id}/items`, menu).then(res => {
+                if (res._id) {
+                    this.props.success();
+                }
+            });
+        }
 
     };
 
@@ -112,9 +158,13 @@ class AddMenuItem extends React.Component {
             <form className="add-item-menu" onSubmit={this.processForm}>
                 <div className="row justify-content-md-center">
                     <div className="col-md-6">
-                        <input type="text" className="product-name" placeholder="Nombre del producto" ref={this.nameInput}/>
-                        <input type="text" placeholder="Precio del producto"/>
-                        <textarea placeholder="Descripción del producto"></textarea>
+                        <input type="text" className="product-name" placeholder="Nombre del producto"
+                               ref={this.nameInput}
+                               defaultValue={this.props.edit ? this.props.edit.name : ''}/>
+                        <input type="text" placeholder="Precio del producto" ref={this.priceInput}
+                               defaultValue={this.props.edit ? this.props.edit.price : ''}/>
+                        <textarea placeholder="Descripción del producto" ref={this.descriptionInput}
+                                  defaultValue={this.props.edit ? this.props.edit.description : ''}></textarea>
                     </div>
                 </div>
                 <div className="row justify-content-md-center">
@@ -126,9 +176,14 @@ class AddMenuItem extends React.Component {
                                          nameRef={this.state.attributes[key].ref}
                                          removeAttribute={this.removeAttribute}
                                          addOption={this.addOption}
-                                         removeOption={this.removeOption}/>
+                                         removeOption={this.removeOption}
+
+                                         nameDefaultValue={this.state.attributes[key].defaultName}
+                            />
                         )}
-                        <button className="btn btn-primary btn-block add-product-attribute" onClick={this.addAttribute}>Añadir Atributo</button>
+                        <button className="btn btn-primary btn-block add-product-attribute"
+                                onClick={this.addAttribute}>Añadir Atributo
+                        </button>
 
                         <button className="btn btn-success btn-block " type="submit">Guardar</button>
                     </div>

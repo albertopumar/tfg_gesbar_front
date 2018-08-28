@@ -6,19 +6,19 @@ class SweetAlert extends React.Component {
 
     delete = () => {
         swal({
-            title: "Are you sure?",
-            text: "Click ok to show the success alert",
+            title: "¿Desea eliminar el elemento?",
+            text: "Haga click en Ok para eliminar la información",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
                 this.props.action(this.props.delete);
-                swal("Poof! Your imaginary file has been deleted!", {
+                swal("¡Información eliminada!", {
                     icon: "success",
                 });
             } else {
-                swal("Your imaginary file is safe!");
+                swal("¡La información sigue a salvo!");
             }
         })
     };

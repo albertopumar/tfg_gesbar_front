@@ -7,7 +7,7 @@ class AddMenuItem extends React.Component {
             <div className="item-options">
                 <div className="product-option-wrapper">
                     <span onClick={(event) => this.props.removeAttribute(this.props.attribute, event)}>x</span>
-                    <input type="text" placeholder="Nombre de la opción del producto" ref={this.props.nameRef}/>
+                    <input type="text" placeholder="Nombre de la opción del producto" ref={this.props.nameRef} defaultValue={this.props.nameDefaultValue}/>
                 </div>
                 <div className="options-wrapper">
 
@@ -16,7 +16,7 @@ class AddMenuItem extends React.Component {
                             <span className="test"
                                   onClick={(event) => this.props.removeOption(this.props.attribute, option, event)}>x</span>
                             <input type="text" placeholder={this.props.options[option].placeholder}
-                                   ref={this.props.options[option].ref}/>
+                                   ref={this.props.options[option].ref} defaultValue={this.props.options[option].devaultOption}/>
                         </div>
                     )}
 

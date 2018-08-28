@@ -12,6 +12,12 @@ class LoginForm extends React.Component {
         loggedIn: false
     };
 
+    register = (event) => {
+        event.preventDefault();
+
+        this.props.history.push('/register');
+    };
+
     processForm = (event) => {
         event.preventDefault();
 
@@ -66,7 +72,7 @@ class LoginForm extends React.Component {
                         <input type="password" placeholder="Contraseña" ref={this.passwordInput}/>
 
                         <button type="submit" className="btn btn-primary btn-block btn-large">Enviar</button>
-
+                        <button onClick={this.register} className="btn btn-primary btn-block btn-large">Regístrate</button>
                     </form>
                 </div>
             </div>

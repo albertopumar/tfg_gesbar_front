@@ -29,7 +29,7 @@ class SubmitOrder extends React.Component {
         let order = this.state.order;
         let products = order.products ? order.products : [];
 
-        order.products = products = products.filter(product => {
+        order.products = products.filter(product => {
             return product.quantity !== "";
         });
 
@@ -38,8 +38,8 @@ class SubmitOrder extends React.Component {
         });
 
         ApiProvider.post('orders', order).then(res => {
-            // TODO: redirect to order list
             console.log(res);
+            this.props.history.push('/orders');
         });
     };
 
@@ -47,25 +47,32 @@ class SubmitOrder extends React.Component {
         let order = this.state.order;
         let products = order.products ? order.products : [];
 
-        let result = products.find(product => {
-            if (product.product === product_id) {
-                product.quantity = quantity;
-                product.options = options;
-                product.price = price;
-                return true
-            }
-            return false;
-        });
-        if (!result) {
-            products.push(
-                {
-                    quantity: quantity,
-                    price: price,
-                    product: product_id,
-                    options: options
+        if (!quantity || quantity === "0") {
+            products = products.filter( product => {
+                return product.product !== product_id;
+            } );
+        } else {
+            let result = products.find(product => {
+                if (product.product === product_id) {
+                    product.quantity = quantity;
+                    product.options = options;
+                    product.price = price;
+                    return true
                 }
-            );
+                return false;
+            });
+            if (!result) {
+                products.push(
+                    {
+                        quantity: quantity,
+                        price: price,
+                        product: product_id,
+                        options: options
+                    }
+                );
+            }
         }
+
         order.products = products;
         this.setState({
             order: order
@@ -94,14 +101,16 @@ class SubmitOrder extends React.Component {
 }
 
 function TotalPrice(props) {
+
     if (props.products.length > 0) {
         let price = 0;
         props.products.forEach((product) => {
-            price += parseInt(product.quantity) * parseInt(product.price);
+            price += parseInt(product.quantity, 10) * parseInt(product.price, 10);
         });
         return (price ? price : 0) + '€';
     }
     return '0€';
+
 }
 
 export default SubmitOrder;

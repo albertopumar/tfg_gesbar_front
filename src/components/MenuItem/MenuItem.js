@@ -1,11 +1,12 @@
 import React from "react";
-
+import AddMenuItem from "../AddMenuItem/AddMenuItem"
 import "./MenuItem.scss"
 
 class MenuItem extends React.Component {
 
     state = {
-        ordered: Boolean,
+        ordered: false,
+        editMenu: false
     };
     quantityRef = React.createRef();
     optionsRefs = [];
@@ -17,9 +18,11 @@ class MenuItem extends React.Component {
         this.setState({
             ordered: true,
         });
-        Object.keys(this.props.menuItem.options).forEach((option) => {
-            this.optionsRefs[option] = React.createRef();
-        })
+        if (this.props.menuItem.options) {
+            Object.keys(this.props.menuItem.options).forEach((option) => {
+                this.optionsRefs[option] = React.createRef();
+            })
+        }
     };
 
     removeOrder = () => {
@@ -38,9 +41,30 @@ class MenuItem extends React.Component {
         this.props.addOrder(this.props.menuItem._id, this.quantityRef.value.value, this.props.menuItem.price, productOptions);
     };
 
+    editOrder = () => {
+        this.setState({editMenu: true});
+    };
+
+    closeAddItem = () => {
+        this.setState({editMenu: false});
+    };
+
 
     render() {
-        const showOptions = (
+
+        let editMenu;
+        if(this.state.editMenu) {
+            editMenu = (
+                <div className="add-item-popup">
+                    <span className="close-add-item" onClick={this.closeAddItem}>x</span>
+                    <AddMenuItem menu={this.props.menu} edit={this.props.menuItem} establishmentId={this.props.establishment} success={this.closeAddItem}/>
+                </div>
+            );
+        } else {
+            editMenu = '';
+        }
+
+        const showOptions = this.props.menuItem.options ? (
             <React.Fragment>
                 {Object.keys(this.props.menuItem.options).map((option) => {
                     return (
@@ -60,9 +84,9 @@ class MenuItem extends React.Component {
                     )
                 })}
             </React.Fragment>
-        );
+        ) : '';
 
-        const selectOptions = (
+        const selectOptions = this.props.menuItem.options ? (
             <React.Fragment>
                 {Object.keys(this.props.menuItem.options).map((option) => {
                     return (
@@ -79,47 +103,54 @@ class MenuItem extends React.Component {
                     )
                 })}
             </React.Fragment>
-        );
+        ) : '';
 
+        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        const isAdmin = credentials.type === 'owner';
 
         return (
-            <div className="row justify-content-md-center">
-                <div className="col-md-6">
-                    <div className="menu-product">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="d-flex justify-content-between">
-                                    <h2>{this.props.menuItem.name}</h2>
+            <React.Fragment>
+                <div className="row justify-content-md-center">
+                    <div className="col-md-12">
+                        <div className="menu-product">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="d-flex justify-content-between">
+                                        <h2>{this.props.menuItem.name}</h2>
 
-                                    {this.props.addOrder && this.state.ordered === true ?
-                                        selectOptions
-                                        : showOptions
-                                    }
+                                        {this.props.addOrder && this.state.ordered === true ?
+                                            selectOptions
+                                            : showOptions
+                                        }
 
-                                    {this.state.ordered === true ?
-                                        (<div className="order-wrapper">
-                                            <input ref={this.quantityRef} onChange={this.submitOrder} type="text"/>
-                                        </div>)
-                                        : ''}
+                                        {this.state.ordered === true ?
+                                            (<div className="order-wrapper">
+                                                <input ref={this.quantityRef} onChange={this.submitOrder} type="text"/>
+                                            </div>)
+                                            : ''}
 
-                                    {this.props.addOrder && this.state.ordered !== true ?
-                                        (<button onClick={this.addOrder}>Comprar</button>)
-                                        : ''}
+                                        {this.props.addOrder && this.state.ordered !== true ?
+                                            (<button onClick={this.addOrder}>Comprar</button>)
+                                            : ''}
 
-                                    {this.props.addOrder && this.state.ordered === true ?
-                                        (<button onClick={this.removeOrder}>Cancelar</button>)
-                                        : ''}
+                                        {this.props.addOrder && this.state.ordered === true ?
+                                            (<button onClick={this.removeOrder}>Cancelar</button>)
+                                            : ''}
+
+                                        {isAdmin ? <button className="btn btn-primary" onClick={this.editOrder}>Editar</button> : ''}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <p className="product-description">{this.props.menuItem.description}</p>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <p className="product-description">{this.props.menuItem.description}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                {editMenu}
+            </React.Fragment>
         )
     }
 }

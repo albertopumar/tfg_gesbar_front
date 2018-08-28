@@ -48,6 +48,10 @@
   width: 80vw;
   background-color: #ffffff;
   padding: 50px;
+  border-radius: 25px;
+  -webkit-box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.75);
 
   input, textarea {
     background: transparent;
@@ -123,5 +127,35 @@
     position: absolute;
     top: 5px;
     right: 20px;
+  }
+}
+
+.success-popup {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: transparent;
+  font-family: 'Open Sans', sans-serif;
+  z-index: 1000;
+  &.success-popup-enter {
+    font-size: 62px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    transition: 1s;
+    &.success-popup-enter-active {
+      font-size: 94px;
+      text-shadow: 0 0 0 rgba(255, 255, 255, 1);
+    }
+  }
+
+  &.success-popup-exit {
+    font-size: 94px;
+    text-shadow: 0 0 0 rgba(255, 255, 255, 1);
+    transition: .5s;
+    &.success-popup-exit-active {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    }
   }
 }

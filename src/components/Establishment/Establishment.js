@@ -34,10 +34,7 @@ class Establishment extends React.Component {
     };
 
     deleteEstablishment = (establishment) => {
-        console.log(establishment);
-
         ApiProvider.remove(`owner/establishment/${establishment._id}`).then(res => {
-            // TODO: Handle error and success
             this.props.removeFromState(establishment);
         });
     };
@@ -46,6 +43,12 @@ class Establishment extends React.Component {
         event.preventDefault();
 
         this.props.history.push(`/establishment/${this.props.establishment._id}/menus`);
+    };
+
+    viewOrders = (event) => {
+        event.preventDefault();
+
+        this.props.history.push(`/establishment/${this.props.establishment._id}/orders`);
     };
 
     render() {
@@ -65,7 +68,7 @@ class Establishment extends React.Component {
                     <button className="btn btn-success btn-block btn-large" type="submit">Guardar</button>
                     <SweetAlert buttonName="Delete" classes="btn-block btn-large" action={this.deleteEstablishment} delete={this.props.establishment}/>
                     <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
-                    <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver Pedidos</button>
+                    <button className="btn btn-primary btn-block btn-large" onClick={this.viewOrders}>Ver Pedidos</button>
 
                     {orders}
                 </form>

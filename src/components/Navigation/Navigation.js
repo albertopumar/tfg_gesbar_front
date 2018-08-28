@@ -3,8 +3,17 @@ import {Link, withRouter} from 'react-router-dom';
 
 class Navigation extends React.Component {
 
+
+    componentWillMount () {
+        console.log(sessionStorage.getItem('credentials'));
+    }
+
     logout = () => {
         sessionStorage.clear();
+        this.props.history.push('/login');
+    };
+
+    login = () => {
         this.props.history.push('/login');
     };
 
@@ -44,9 +53,14 @@ class Navigation extends React.Component {
                                 </li>
                             </ul>
                             <div className="form-inline my-2 my-md-0">
-                                <button className="btn btn-primary" onClick={this.logout}>
+                                {sessionStorage.getItem('credentials') === null ?
+                                    <button className="btn btn-primary" onClick={this.login}>
+                                    Login
+                                    </button> :
+                                    <button className="btn btn-primary" onClick={this.logout}>
                                     Logout
-                                </button>
+                                    </button>
+                                }
                             </div>
                         </div>
                     </nav>
