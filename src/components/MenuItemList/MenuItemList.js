@@ -6,7 +6,8 @@ import MenuItem from "../MenuItem/MenuItem";
 class MenuItemList extends React.Component {
 
     state = {
-        items: []
+        items: [],
+        needUpdate: false
     };
 
     componentWillMount() {
@@ -19,8 +20,31 @@ class MenuItemList extends React.Component {
 
     }
 
-    removeFromState = () => {
+    componentWillUpdate(nextProps, nextState) {
+        if(nextState.needUpdate === true) {
+            const {match: {params}} = this.props;
+            ApiProvider.get(`owner/establishment/${params.establishmentId}/menu/${params.menuId}/items`).then(res => {
+                this.setState({
+                    items: res,
+                    needUpdate: true
+                });
+            });
+        }
+    }
 
+    needUpdate = () => {
+        this.setState({needUpdate: true});
+    };
+
+    removeFromState = (menuItem) => {
+        const items = [...this.state.items];
+        const index = items.indexOf(menuItem);
+
+        items.splice(index, 1);
+
+        this.setState({
+            items: items
+        });
     };
 
     render() {
@@ -34,6 +58,7 @@ class MenuItemList extends React.Component {
                             menuItem={item}
                             removeFromState={this.removeFromState}
                             establishment={this.props.match.params.establishmentId}
+                            needUpdate={this.needUpdate}
                         />
                     })}
                 </div>

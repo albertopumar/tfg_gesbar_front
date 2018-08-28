@@ -119,7 +119,6 @@ class AddMenuItem extends React.Component {
 
         const attributes = this.state.attributes;
 
-        //TODO: Check return
         Object.keys(attributes).map((key) => {
             const typeName = attributes[key].ref.value.value;
             const options = attributes[key].options;

@@ -3,11 +3,6 @@ import {Link, withRouter} from 'react-router-dom';
 
 class Navigation extends React.Component {
 
-
-    componentWillMount () {
-        console.log(sessionStorage.getItem('credentials'));
-    }
-
     logout = () => {
         sessionStorage.clear();
         this.props.history.push('/login');

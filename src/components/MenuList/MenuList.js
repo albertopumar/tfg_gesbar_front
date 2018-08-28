@@ -6,17 +6,29 @@ import Menu from "../Menu/Menu";
 class MenuList extends React.Component {
 
     state = {
-        menus: []
+        menus: [],
+        needUpdate: false
     };
 
     componentWillMount() {
 
         const {match: {params}} = this.props;
-
         ApiProvider.get(`owner/establishment/${params.establishmentId}/menu`).then(res => {
             this.setState({menus: res});
         });
 
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if(nextState.needUpdate === true) {
+            const {match: {params}} = this.props;
+            ApiProvider.get(`owner/establishment/${params.establishmentId}/menu`).then(res => {
+                this.setState({
+                    menus: res,
+                    needUpdate: false
+                });
+            });
+        }
     }
 
     createMenu = () => {
@@ -62,6 +74,10 @@ class MenuList extends React.Component {
         });
     };
 
+    updateMenus = () => {
+        this.setState({needUpdate: true});
+    };
+
     render() {
         return (
             <div className="menu-list">
@@ -73,6 +89,7 @@ class MenuList extends React.Component {
                             menu={menu}
                             removeFromState={this.removeFromState}
                             updateActiveMenu={this.updateActiveMenu}
+                            updateMenus={this.updateMenus}
                         />
                     })}
 

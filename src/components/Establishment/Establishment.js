@@ -18,14 +18,12 @@ class Establishment extends React.Component {
 
         if (this.props.establishment._id) {
             ApiProvider.put(`owner/establishment/${this.props.establishment._id}`, data).then(res => {
-                // TODO: Handle error and success
                 if(!res.message) {
                     this.props.showSuccess();
                 }
             });
         } else {
             ApiProvider.post('owner/establishment', data).then(res => {
-                // TODO: Handle error and success and update state
                 if(!res.message) {
                     this.props.showSuccess();
                 }
@@ -35,7 +33,9 @@ class Establishment extends React.Component {
 
     deleteEstablishment = (establishment) => {
         ApiProvider.remove(`owner/establishment/${establishment._id}`).then(res => {
-            this.props.removeFromState(establishment);
+            if (!res.message) {
+                this.props.removeFromState(establishment);
+            }
         });
     };
 
@@ -66,9 +66,9 @@ class Establishment extends React.Component {
                               defaultValue={this.props.establishment.description}></textarea>
 
                     <button className="btn btn-success btn-block btn-large" type="submit">Guardar</button>
-                    <SweetAlert buttonName="Delete" classes="btn-block btn-large" action={this.deleteEstablishment} delete={this.props.establishment}/>
-                    <button className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
-                    <button className="btn btn-primary btn-block btn-large" onClick={this.viewOrders}>Ver Pedidos</button>
+                    <SweetAlert disabled={!this.props.establishment._id} buttonName="Delete" classes="btn-block btn-large" action={this.deleteEstablishment} delete={this.props.establishment}/>
+                    <button disabled={!this.props.establishment._id} className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
+                    <button disabled={!this.props.establishment._id} className="btn btn-primary btn-block btn-large" onClick={this.viewOrders}>Ver Pedidos</button>
 
                     {orders}
                 </form>

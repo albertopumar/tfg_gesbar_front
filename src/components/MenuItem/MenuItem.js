@@ -1,6 +1,8 @@
 import React from "react";
 import AddMenuItem from "../AddMenuItem/AddMenuItem"
 import "./MenuItem.scss"
+import ApiProvider from "../../providers/ApiProvider";
+import SweetAlert from "../SweetAlert/SweetAlert";
 
 class MenuItem extends React.Component {
 
@@ -10,9 +12,6 @@ class MenuItem extends React.Component {
     };
     quantityRef = React.createRef();
     optionsRefs = [];
-
-    componentDidMount() {
-    }
 
     addOrder = () => {
         this.setState({
@@ -49,6 +48,22 @@ class MenuItem extends React.Component {
         this.setState({editMenu: false});
     };
 
+    updateMenu = () => {
+        this.props.needUpdate();
+
+        this.setState({
+            editMenu: false,
+        });
+    };
+
+    deleteMenuItem = (menuItem) => {
+        console.log(menuItem);
+        ApiProvider.remove(`owner/establishment/${this.props.establishment}/menu/${menuItem.menu}/items/${menuItem._id}`).then(res => {
+            if (!res.message) {
+                this.props.removeFromState(menuItem);
+            }
+        });
+    };
 
     render() {
 
@@ -57,7 +72,7 @@ class MenuItem extends React.Component {
             editMenu = (
                 <div className="add-item-popup">
                     <span className="close-add-item" onClick={this.closeAddItem}>x</span>
-                    <AddMenuItem menu={this.props.menu} edit={this.props.menuItem} establishmentId={this.props.establishment} success={this.closeAddItem}/>
+                    <AddMenuItem menu={this.props.menu} edit={this.props.menuItem} establishmentId={this.props.establishment} success={this.updateMenu}/>
                 </div>
             );
         } else {
@@ -137,7 +152,12 @@ class MenuItem extends React.Component {
                                             (<button onClick={this.removeOrder}>Cancelar</button>)
                                             : ''}
 
-                                        {isAdmin ? <button className="btn btn-primary" onClick={this.editOrder}>Editar</button> : ''}
+                                        {isAdmin ?
+                                            <React.Fragment>
+                                                <button className="btn btn-primary" onClick={this.editOrder}>Editar</button>
+                                                <SweetAlert disabled={!this.props.menuItem._id} buttonName="Borrar" classes="btn-large" action={this.deleteMenuItem} delete={this.props.menuItem}/>
+                                            </React.Fragment>
+                                            : ''}
                                     </div>
                                 </div>
                             </div>

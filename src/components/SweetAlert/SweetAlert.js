@@ -4,7 +4,9 @@ import swal from 'sweetalert';
 class SweetAlert extends React.Component {
 
 
-    delete = () => {
+    delete = (event) => {
+        event.preventDefault();
+
         swal({
             title: "¿Desea eliminar el elemento?",
             text: "Haga click en Ok para eliminar la información",
@@ -26,8 +28,9 @@ class SweetAlert extends React.Component {
 
     render() {
         return (
-            <div className={`btn btn-danger sweet-alert ${this.props.classes}`} onClick={this.delete}><span
-                className='s'>{this.props.buttonName}</span></div>
+            <button disabled={this.props.disabled} className={`btn btn-danger sweet-alert ${this.props.classes}`} onClick={this.delete}>
+                {this.props.buttonName}
+            </button>
         )
     }
 }

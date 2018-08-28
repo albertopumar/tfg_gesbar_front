@@ -29,6 +29,7 @@ class Menu extends React.Component {
                 console.log(res);
                 if(!res.message) {
                     this.setState({showSuccess: true});
+                    this.props.updateMenus();
                 }
             });
         } else {
@@ -36,6 +37,7 @@ class Menu extends React.Component {
                 console.log(res);
                 if(!res.message) {
                     this.setState({showSuccess: true});
+                    this.props.updateMenus();
                 }
             });
         }
@@ -87,7 +89,7 @@ class Menu extends React.Component {
                         <form onSubmit={this.processForm} className="menu-container">
                             <div className="row">
                                 <div className="col-md-1">
-                                    <input type="checkbox" checked={this.props.menu.availability} onChange={this.updateActiveMenu}/>
+                                    <input disabled={!this.props.menu._id} type="checkbox" checked={this.props.menu.availability} onChange={this.updateActiveMenu}/>
                                 </div>
                                 <div className="col-md-11">
                                     <input type="text" placeholder="Nombre" ref={this.nameRef} defaultValue={this.props.menu.name}/>
@@ -101,15 +103,15 @@ class Menu extends React.Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
-                                    <button className="btn btn-primary btn-large btn-block" onClick={this.viewItem}>Ver Productos</button>
+                                    <button disabled={!this.props.menu._id} className="btn btn-primary btn-large btn-block" onClick={this.viewItem}>Ver Productos</button>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="buttons-wrapper d-flex">
                                         <button className="btn btn-success">Guardar</button>
-                                        <SweetAlert buttonName="Borrar" action={this.deleteMenu} delete={this.props.menu}/>
-                                        <button className="btn btn-primary" onClick={this.addItem}>Añadir producto</button>
+                                        <SweetAlert disabled={!this.props.menu._id} buttonName="Borrar" action={this.deleteMenu} delete={this.props.menu}/>
+                                        <button disabled={!this.props.menu._id} className="btn btn-primary" onClick={this.addItem}>Añadir producto</button>
                                     </div>
                                 </div>
                             </div>

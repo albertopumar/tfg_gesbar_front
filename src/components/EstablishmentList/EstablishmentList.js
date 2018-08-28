@@ -10,20 +10,29 @@ class EstablishmentList extends React.Component {
     state = {
         establishments: [],
         showSuccess: false,
+        needUpdate: false
     };
 
     componentWillMount() {
-
         ApiProvider.get('owner/establishment').then(res => {
             this.setState({establishments: res})
         });
+    }
 
+    componentWillUpdate(nextProps, nextState) {
+        if(nextState.needUpdate === true) {
+            ApiProvider.get('owner/establishment').then(res => {
+                this.setState({
+                    establishments: res,
+                    needUpdate: false
+                })
+            });
+        }
     }
 
     componentDidMount() {
 
         const credentials = JSON.parse(sessionStorage.getItem('credentials'));
-        console.log(credentials);
 
         this.eventSource = new RNEventSource('http://localhost:7777/api/V1/events/establishment', {
             headers: {
@@ -77,7 +86,8 @@ class EstablishmentList extends React.Component {
 
     showSuccess = () => {
         this.setState({
-            showSuccess: true
+            showSuccess: true,
+            needUpdate: true
         });
     };
 
