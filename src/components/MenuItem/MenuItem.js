@@ -140,16 +140,16 @@ class MenuItem extends React.Component {
 
                                         {this.state.ordered === true ?
                                             (<div className="order-wrapper">
-                                                <input ref={this.quantityRef} onChange={this.submitOrder} type="text"/>
+                                                <input ref={this.quantityRef} onChange={this.submitOrder} placeholder="cantidad" type="text"/>
                                             </div>)
                                             : ''}
 
                                         {this.props.addOrder && this.state.ordered !== true ?
-                                            (<button onClick={this.addOrder}>Comprar</button>)
+                                            (<button className="btn btn-primary" onClick={this.addOrder}>Comprar</button>)
                                             : ''}
 
                                         {this.props.addOrder && this.state.ordered === true ?
-                                            (<button onClick={this.removeOrder}>Cancelar</button>)
+                                            (<button className="btn btn-danger" onClick={this.removeOrder}>Cancelar</button>)
                                             : ''}
 
                                         {isAdmin ?
@@ -159,6 +159,11 @@ class MenuItem extends React.Component {
                                             </React.Fragment>
                                             : ''}
                                     </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <p className="product-description">Precio: {this.props.menuItem.price}€</p>
                                 </div>
                             </div>
                             <div className="row">

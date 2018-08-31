@@ -26,7 +26,7 @@ class MenuItemList extends React.Component {
             ApiProvider.get(`owner/establishment/${params.establishmentId}/menu/${params.menuId}/items`).then(res => {
                 this.setState({
                     items: res,
-                    needUpdate: true
+                    needUpdate: false
                 });
             });
         }

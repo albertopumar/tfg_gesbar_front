@@ -1,12 +1,14 @@
 import React from "react";
 import ItemOptions from "../ItemOptions/ItemOptions";
 import ApiProvider from "../../providers/ApiProvider";
+import "./AddMenuItem.scss";
 
 class AddMenuItem extends React.Component {
 
     nameInput = React.createRef();
     priceInput = React.createRef();
     descriptionInput = React.createRef();
+    availabilityInput = React.createRef();
 
     state = {
         attributes: {},
@@ -128,10 +130,10 @@ class AddMenuItem extends React.Component {
             });
         });
 
-
         let menu = {};
         menu['name'] = this.nameInput.value.value;
         menu['price'] = this.priceInput.value.value;
+        menu['availability'] = this.availabilityInput.value.checked;
         menu['description'] = this.descriptionInput.value.value;
         menu['options'] = data;
 
@@ -160,8 +162,13 @@ class AddMenuItem extends React.Component {
                         <input type="text" className="product-name" placeholder="Nombre del producto"
                                ref={this.nameInput}
                                defaultValue={this.props.edit ? this.props.edit.name : ''}/>
+
                         <input type="text" placeholder="Precio del producto" ref={this.priceInput}
                                defaultValue={this.props.edit ? this.props.edit.price : ''}/>
+
+                        <label>Disponibilidad</label>
+                        <input type="checkbox" ref={this.availabilityInput} defaultChecked={this.props.edit ? this.props.edit.availability : false} />
+
                         <textarea placeholder="Descripción del producto" ref={this.descriptionInput}
                                   defaultValue={this.props.edit ? this.props.edit.description : ''}></textarea>
                     </div>

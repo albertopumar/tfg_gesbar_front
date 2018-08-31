@@ -1,7 +1,6 @@
 const base_url = 'http://localhost:7777/api/V1/';
 
 function get(uri) {
-
     return getToken().then(res => {
         return fetch(base_url + uri, {
             headers: {

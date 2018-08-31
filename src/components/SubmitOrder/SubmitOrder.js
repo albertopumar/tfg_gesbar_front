@@ -5,6 +5,7 @@ import MenuItem from "../MenuItem/MenuItem";
 
 class SubmitOrder extends React.Component {
 
+    notesRef = React.createRef();
     state = {
         menus: [],
         order: {
@@ -27,6 +28,7 @@ class SubmitOrder extends React.Component {
 
     submitOrder = () => {
         let order = this.state.order;
+        order.notes = this.notesRef.value.value;
         let products = order.products ? order.products : [];
 
         order.products = products.filter(product => {
@@ -93,8 +95,11 @@ class SubmitOrder extends React.Component {
                     })}
                 </div>
 
-                <p>Precio total: <TotalPrice products={this.state.order.products}/> </p>
-                <button onClick={this.submitOrder}>Realizar pedido</button>
+                <div className="notes-wrapper">
+                    <textarea placeholder="Notas adicionales..." ref={this.notesRef}></textarea>
+                </div>
+                <p className="total-price">Precio total: <TotalPrice products={this.state.order.products}/> </p>
+                <button disabled={!this.state.order.products.length} className="btn btn-primary submit-order" onClick={this.submitOrder}>Realizar pedido</button>
             </div>
         )
     }
@@ -105,7 +110,7 @@ function TotalPrice(props) {
     if (props.products.length > 0) {
         let price = 0;
         props.products.forEach((product) => {
-            price += parseInt(product.quantity, 10) * parseInt(product.price, 10);
+            price += parseFloat(product.quantity) * parseFloat(product.price);
         });
         return (price ? price : 0) + '€';
     }

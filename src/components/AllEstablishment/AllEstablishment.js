@@ -6,7 +6,8 @@ class AllEstablishment extends React.Component {
 
     state = {
         establishments: [],
-        page: Number
+        page: Number,
+        lastPage: false
     };
     searchRef = React.createRef();
 
@@ -38,7 +39,14 @@ class AllEstablishment extends React.Component {
             uri += `page=${nextState.page}`;
 
             ApiProvider.get(uri).then(res => {
-                this.setState({establishments: res})
+                if (!res.length) {
+                    this.setState({
+                        page: this.state.page - 1,
+                        lastPage: true
+                    });
+                } else {
+                    this.setState({establishments: res});
+                }
             });
         }
     }
@@ -49,7 +57,10 @@ class AllEstablishment extends React.Component {
     };
 
     prevPage = () => {
-        this.setState({page: this.state.page - 1});
+        this.setState({
+            page: this.state.page - 1,
+            lastPage: false
+        });
     };
 
     nextPage = () => {
@@ -89,8 +100,8 @@ class AllEstablishment extends React.Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-11 offset-md-1">
-                            <button className="btn btn-light prev-button" onClick={this.prevPage}>Anterior</button>
-                            <button className="btn btn-light next-button" onClick={this.nextPage}>Siguiente</button>
+                            <button disabled={!this.state.page} className="btn btn-light prev-button" onClick={this.prevPage}>Anterior</button>
+                            <button disabled={this.state.lastPage} className="btn btn-light next-button" onClick={this.nextPage}>Siguiente</button>
                         </div>
                     </div>
                 </div>
