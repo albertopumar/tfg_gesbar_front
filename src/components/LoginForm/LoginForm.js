@@ -52,7 +52,7 @@ class LoginForm extends React.Component {
                         data: res,
                         timestamp: timestamp,
                     };
-                    sessionStorage.setItem('credentials', JSON.stringify(object));
+                    localStorage.setItem('credentials', JSON.stringify(object));
 
                     this.setState({loggedIn: res.type});
                 }

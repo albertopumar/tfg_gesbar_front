@@ -71,7 +71,7 @@ function getToken() {
 
     const dateTime = Date.now();
     const timestamp = Math.floor(dateTime / 1000);
-    const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+    const credentials = JSON.parse(localStorage.getItem('credentials'));
 
     if ((timestamp - credentials.data.expires_in) < credentials.timestamp) {
         return new Promise((resolve, reject) => {
@@ -86,7 +86,7 @@ function getToken() {
 
 function renewToken() {
 
-    const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+    const credentials = JSON.parse(localStorage.getItem('credentials'));
     const data = {
         grant_type: 'refresh_token',
         client_id: 'mobileV1',
@@ -105,7 +105,7 @@ function renewToken() {
         .then(response => response.json())
         .then(res => {
             credentials.data = res;
-            sessionStorage.setItem('credentials', JSON.stringify(credentials));
+            localStorage.setItem('credentials', JSON.stringify(credentials));
             return credentials.data.access_token;
         });
 }

@@ -48,7 +48,7 @@ class RegisterForm extends React.Component {
     };
 
     render() {
-        const userType = sessionStorage.getItem('credentials') === null ? '' : JSON.parse(sessionStorage.getItem('credentials')).type;
+        const userType = localStorage.getItem('credentials') === null ? '' : JSON.parse(localStorage.getItem('credentials')).type;
         return (
             <div className="register-wrapper">
                 <div className="register">

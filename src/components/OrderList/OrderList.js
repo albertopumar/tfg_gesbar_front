@@ -15,7 +15,7 @@ class OrderList extends React.Component {
     };
 
     componentWillMount() {
-        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        const credentials = JSON.parse(localStorage.getItem('credentials'));
         const isOwner = credentials.type === 'owner';
         this.setState({isOwner: isOwner});
 
@@ -47,7 +47,7 @@ class OrderList extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        const credentials = JSON.parse(localStorage.getItem('credentials'));
         const isOwner = credentials.type === 'owner';
 
         if(nextState.needUpdate === true) {

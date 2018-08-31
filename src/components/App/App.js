@@ -14,8 +14,8 @@ import AllEstablishment from "../AllEstablishment/AllEstablishment";
 import SubmitOrder from "../SubmitOrder/SubmitOrder";
 
 const isAuth = () => {
-    if (sessionStorage.getItem('credentials')) {
-        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+    if (localStorage.getItem('credentials')) {
+        const credentials = JSON.parse(localStorage.getItem('credentials'));
         return credentials.type;
     }
     else

@@ -32,7 +32,7 @@ class EstablishmentList extends React.Component {
 
     componentDidMount() {
 
-        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        const credentials = JSON.parse(localStorage.getItem('credentials'));
 
         this.eventSource = new RNEventSource('http://localhost:7777/api/V1/events/establishment', {
             headers: {

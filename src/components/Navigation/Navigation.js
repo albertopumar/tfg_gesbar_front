@@ -4,7 +4,7 @@ import {Link, withRouter} from 'react-router-dom';
 class Navigation extends React.Component {
 
     logout = () => {
-        sessionStorage.clear();
+        localStorage.clear();
         this.props.history.push('/login');
     };
 
@@ -48,7 +48,7 @@ class Navigation extends React.Component {
                                 </li>
                             </ul>
                             <div className="form-inline my-2 my-md-0">
-                                {sessionStorage.getItem('credentials') === null ?
+                                {localStorage.getItem('credentials') === null ?
                                     <button className="btn btn-primary" onClick={this.login}>
                                     Login
                                     </button> :

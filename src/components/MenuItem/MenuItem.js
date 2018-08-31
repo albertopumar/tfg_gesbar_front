@@ -120,7 +120,7 @@ class MenuItem extends React.Component {
             </React.Fragment>
         ) : '';
 
-        const credentials = JSON.parse(sessionStorage.getItem('credentials'));
+        const credentials = JSON.parse(localStorage.getItem('credentials'));
         const isAdmin = credentials.type === 'owner';
 
         return (
