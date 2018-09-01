@@ -9,7 +9,8 @@ class LoginForm extends React.Component {
 
 
     state = {
-        loggedIn: false
+        loggedIn: false,
+        showError: false
     };
 
     register = (event) => {
@@ -55,6 +56,8 @@ class LoginForm extends React.Component {
                     localStorage.setItem('credentials', JSON.stringify(object));
 
                     this.setState({loggedIn: res.type});
+                } else {
+                    this.setState({showError: true});
                 }
             });
     };
@@ -73,6 +76,11 @@ class LoginForm extends React.Component {
 
                         <button type="submit" className="btn btn-primary btn-block btn-large">Enviar</button>
                         <button onClick={this.register} className="btn btn-primary btn-block btn-large">Regístrate</button>
+                        {
+                            this.state.showError ?
+                                <p className="error-message">Ha ocurrido un error. Compruebe sus datos.</p> :
+                                ''
+                        }
                     </form>
                 </div>
             </div>

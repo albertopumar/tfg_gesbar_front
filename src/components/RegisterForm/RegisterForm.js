@@ -6,7 +6,8 @@ import {CSSTransition} from "react-transition-group"
 class RegisterForm extends React.Component {
 
     state = {
-        showError: false
+        showError: false,
+        formsError: false
     };
 
     userInput = React.createRef();
@@ -16,6 +17,11 @@ class RegisterForm extends React.Component {
 
     processForm = (event) => {
         event.preventDefault();
+
+        this.setState({
+            showError: false,
+            formsError: false
+        });
 
         const user = this.userInput.value.value;
         const password = this.passwordInput.value.value;
@@ -39,10 +45,12 @@ class RegisterForm extends React.Component {
         })
             .then(response => response.json())
             .then(res => {
-                if (res.errmsg === undefined) {
-                    this.props.history.push('/login');
-                } else {
+                if (res.errmsg !== undefined) {
                     this.setState({showError: true});
+                } else if (res.errors !== undefined) {
+                    this.setState({formsError: true});
+                } else {
+                    this.props.history.push('/login');
                 }
             });
     };
@@ -60,28 +68,25 @@ class RegisterForm extends React.Component {
                         <input type="email" placeholder="Email" ref={this.emailInput}/>
                         <input type="text" placeholder="Usuario" ref={this.userInput}/>
                         <select ref={this.typeInput} className="form-control">
-                            <option>Selecciona el tipo de usuario</option>
                             <option value="owner">Dueño</option>
                             <option value="client">Cliente</option>
                         </select>
                         <input type="password" placeholder="Contraseña" ref={this.passwordInput}/>
-
-
                         <button type="submit" className="btn btn-primary btn-block btn-large">Enviar</button>
+
+                        {
+                            this.state.formsError ?
+                                <p className="error-message">Ha ocurrido un error. Introduzca los datos correctamente.</p> :
+                                ''
+                        }
+
+                        {
+                            this.state.showError ?
+                                <p className="error-message">Ha ocurrido un error. Usuario en uso.</p> :
+                                ''
+                        }
                     </form>
                 </div>
-                <CSSTransition
-                    in={this.state.showError}
-                    timeout={{enter: 1500, exit: 500}}
-                    classNames="error-popup"
-                    unmountOnExit
-                    onEntered={() => {
-                        this.setState({
-                            showError: false
-                        })
-                    }}>
-                    <div className="error-popup">Usuario en uso</div>
-                </CSSTransition>
             </div>
         )
     }

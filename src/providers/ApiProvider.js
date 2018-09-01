@@ -104,6 +104,10 @@ function renewToken() {
     })
         .then(response => response.json())
         .then(res => {
+            if (res.error) {
+                localStorage.clear();
+                window.location.href = '/login';
+            }
             credentials.data = res;
             localStorage.setItem('credentials', JSON.stringify(credentials));
             return credentials.data.access_token;

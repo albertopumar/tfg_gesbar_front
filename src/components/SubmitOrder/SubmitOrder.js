@@ -112,7 +112,7 @@ function TotalPrice(props) {
         props.products.forEach((product) => {
             price += parseFloat(product.quantity) * parseFloat(product.price);
         });
-        return (price ? price : 0) + '€';
+        return (price ? price.toFixed(2) : 0) + '€';
     }
     return '0€';
 

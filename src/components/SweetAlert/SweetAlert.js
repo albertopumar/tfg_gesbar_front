@@ -11,7 +11,7 @@ class SweetAlert extends React.Component {
             title: "¿Desea eliminar el elemento?",
             text: "Haga click en Ok para eliminar la información",
             icon: "warning",
-            buttons: true,
+            buttons: ["Cancelar", "Ok"],
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {

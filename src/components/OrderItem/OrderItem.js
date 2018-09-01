@@ -49,13 +49,23 @@ class OrderItem extends React.Component {
         });
     };
 
+    mapStatus (status) {
+        const mapper = {
+            pending: 'Pendiente',
+            ready: 'Listo para recoger',
+            collected: 'Recogido'
+        }
+
+        return mapper[status];
+    }
+
     render() {
         return (
             <React.Fragment>
                 <div className="row align-items-center">
                     <div className="col-md-6">
                         <h2>
-                            <span>{new Date(this.props.order.date).toLocaleDateString('es-ES')}</span> <span>({this.props.order.status})</span>
+                            <span>{new Date(this.props.order.date).toLocaleDateString('es-ES')}</span> <span>({this.mapStatus(this.props.order.status)})</span>
                         </h2>
                         <p>{this.formatOrder(this.props.order.products)}</p>
                     </div>
@@ -71,7 +81,7 @@ class OrderItem extends React.Component {
                                 <div className="order-info">
                                     <p className="establishment-name">Pedido realizado en {this.state.establishmentName} {this.state.clientName ? <React.Fragment>por <strong>{this.state.clientName}</strong></React.Fragment> : ''} </p>
                                     <p className="order-date">Pedido realizado el día {new Date(this.props.order.date).toLocaleDateString('es-ES')} a las {new Date(this.props.order.date).toLocaleTimeString('es-ES')}</p>
-                                    <p className="order-status">Estado: {this.props.order.status}</p>
+                                    <p className="order-status">Estado: {this.mapStatus(this.props.order.status)}</p>
                                     <p className="order-notes">Notas: {this.props.order.notes}</p>
 
                                     <h3>Productos:</h3>
@@ -105,7 +115,7 @@ class OrderItem extends React.Component {
                 {
                     this.props.isOwner ?
                         <React.Fragment>
-                            <label>Status: </label>
+                            <label>Estado: </label>
                             <select onChange={this.updateStatus} value={this.props.order.status}>
                                 <option value="pending">Pendiente</option>
                                 <option value="ready">Listo para recoger</option>

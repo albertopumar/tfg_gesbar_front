@@ -19,25 +19,34 @@ class OrderList extends React.Component {
         const isOwner = credentials.type === 'owner';
         this.setState({isOwner: isOwner});
 
-        ApiProvider.get('orders?status=pending').then((res) => {
-            this.setState({
-                pending: res
-            });
-        });
 
         if (isOwner) {
-            ApiProvider.get('orders?status=ready').then((res) => {
+            const establishmentId = this.props.match.params.establishmentId;
+
+            ApiProvider.get(`orders?status=pending&establishment=${establishmentId}`).then((res) => {
+                this.setState({
+                    pending: res
+                });
+            });
+
+            ApiProvider.get(`orders?status=ready&establishment=${establishmentId}`).then((res) => {
                 this.setState({
                     ready: res
                 });
             });
 
-            ApiProvider.get('orders?status=collected').then((res) => {
+            ApiProvider.get(`orders?status=collected&establishment=${establishmentId}`).then((res) => {
                 this.setState({
                     collected: res
                 });
             });
         } else {
+            ApiProvider.get('orders?status=pending').then((res) => {
+                this.setState({
+                    pending: res
+                });
+            });
+
             ApiProvider.get('orders').then((res) => {
                 this.setState({
                     history: res

@@ -66,7 +66,7 @@ class Establishment extends React.Component {
                               defaultValue={this.props.establishment.description}></textarea>
 
                     <button className="btn btn-success btn-block btn-large" type="submit">Guardar</button>
-                    <SweetAlert disabled={!this.props.establishment._id} buttonName="Delete" classes="btn-block btn-large" action={this.deleteEstablishment} delete={this.props.establishment}/>
+                    <SweetAlert disabled={!this.props.establishment._id} buttonName="Borrar" classes="btn-block btn-large" action={this.deleteEstablishment} delete={this.props.establishment}/>
                     <button disabled={!this.props.establishment._id} className="btn btn-primary btn-block btn-large" onClick={this.viewMenu}>Ver menú</button>
                     <button disabled={!this.props.establishment._id} className="btn btn-primary btn-block btn-large" onClick={this.viewOrders}>Ver Pedidos</button>
 

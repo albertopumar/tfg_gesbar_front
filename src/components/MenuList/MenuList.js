@@ -95,7 +95,7 @@ class MenuList extends React.Component {
 
                     <div className="row justify-content-center">
                         <div className="col-md-4">
-                            <button className="btn btn-primary btn-block" onClick={this.createMenu}>Add menu</button>
+                            <button className="btn btn-primary btn-block" onClick={this.createMenu}>Añadir menú</button>
                         </div>
                     </div>
                 </div>
