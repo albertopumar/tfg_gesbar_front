@@ -1,7 +1,6 @@
 import React from "react";
 import {Redirect} from 'react-router-dom'
 import "./RegisterForm.scss"
-import {CSSTransition} from "react-transition-group"
 
 class RegisterForm extends React.Component {
 

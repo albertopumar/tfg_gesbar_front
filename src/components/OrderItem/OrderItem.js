@@ -81,6 +81,13 @@ class OrderItem extends React.Component {
                                 <div className="order-info">
                                     <p className="establishment-name">Pedido realizado en {this.state.establishmentName} {this.state.clientName ? <React.Fragment>por <strong>{this.state.clientName}</strong></React.Fragment> : ''} </p>
                                     <p className="order-date">Pedido realizado el día {new Date(this.props.order.date).toLocaleDateString('es-ES')} a las {new Date(this.props.order.date).toLocaleTimeString('es-ES')}</p>
+
+                                    {this.props.order.deliveryDate ?
+                                        <p className="order-date">Pedido recogido el
+                                            día {new Date(this.props.order.deliveryDate).toLocaleDateString('es-ES')} a
+                                            las {new Date(this.props.order.deliveryDate).toLocaleTimeString('es-ES')}</p> :
+                                        ''
+                                    }
                                     <p className="order-status">Estado: {this.mapStatus(this.props.order.status)}</p>
                                     <p className="order-notes">Notas: {this.props.order.notes}</p>
 
