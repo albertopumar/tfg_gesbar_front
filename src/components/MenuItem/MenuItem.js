@@ -3,6 +3,7 @@ import AddMenuItem from "../AddMenuItem/AddMenuItem"
 import "./MenuItem.scss"
 import ApiProvider from "../../providers/ApiProvider";
 import SweetAlert from "../SweetAlert/SweetAlert";
+import placeholder from './placeholder.png';
 
 class MenuItem extends React.Component {
 
@@ -126,7 +127,10 @@ class MenuItem extends React.Component {
         return (
             <React.Fragment>
                 <div className="row justify-content-md-center">
-                    <div className="col-md-12">
+                    <div className="col-md-3">
+                        <img className="product-image" src={this.props.menuItem.image ? this.props.menuItem.image : placeholder} alt="Product image"/>
+                    </div>
+                    <div className="col-md-9">
                         <div className="menu-product">
                             <div className="row">
                                 <div className="col-md-12">

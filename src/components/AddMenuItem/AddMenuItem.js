@@ -1,4 +1,5 @@
 import React from "react";
+import ImageUploader from 'react-images-upload';
 import ItemOptions from "../ItemOptions/ItemOptions";
 import ApiProvider from "../../providers/ApiProvider";
 import "./AddMenuItem.scss";
@@ -12,6 +13,7 @@ class AddMenuItem extends React.Component {
 
     state = {
         attributes: {},
+        picture: ''
     };
 
     componentWillMount() {
@@ -136,7 +138,7 @@ class AddMenuItem extends React.Component {
         menu['availability'] = this.availabilityInput.value.checked;
         menu['description'] = this.descriptionInput.value.value;
         menu['options'] = data;
-
+        menu['image'] = this.state.picture;
 
         if (this.props.edit) {
             ApiProvider.put(`owner/establishment/${this.props.establishmentId}/menu/${this.props.edit.menu}/items/${this.props.edit._id}`, menu).then(res => {
@@ -154,6 +156,12 @@ class AddMenuItem extends React.Component {
 
     };
 
+    onDrop = (pictureFiles, pictureDataURLs) => {
+        this.setState({
+            picture: pictureDataURLs
+        });
+    };
+
     render() {
         return (
             <form className="add-item-menu" onSubmit={this.processForm}>
@@ -168,6 +176,15 @@ class AddMenuItem extends React.Component {
 
                         <label>Disponibilidad</label>
                         <input type="checkbox" ref={this.availabilityInput} defaultChecked={this.props.edit ? this.props.edit.availability : false} />
+
+                        <ImageUploader
+                            withIcon={true}
+                            buttonText='Elige una imagen'
+                            onChange={this.onDrop}
+                            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                            maxFileSize={5242880}
+                            withPreview={true}
+                        />
 
                         <textarea placeholder="Descripción del producto" ref={this.descriptionInput}
                                   defaultValue={this.props.edit ? this.props.edit.description : ''}></textarea>

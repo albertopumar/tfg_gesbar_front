@@ -76,6 +76,11 @@
     overflow-y: scroll;
     height: 100%;
 
+    .fileUploader {
+      box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.75);
+      border-radius: 5px;
+    }
+
     .add-product-attribute {
       margin-top: 20px;
     }
