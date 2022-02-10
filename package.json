@@ -24,7 +24,7 @@
     "eslint-plugin-react": "7.4.0",
     "file-loader": "1.1.5",
     "html-webpack-plugin": "2.29.0",
-    "node-sass": "^4.8.3",
+    "node-sass": "^7.0.0",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
